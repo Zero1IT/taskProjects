@@ -1,6 +1,9 @@
 package com.asist.project;
 
 import com.asist.project.config.HibernateMetadataIntegrator;
+import com.asist.project.models.Role;
+import com.asist.project.models.User;
+import com.asist.project.repository.UserRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration;
@@ -10,13 +13,14 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
 import org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 
@@ -39,6 +43,7 @@ import java.util.Arrays;
         ErrorMvcAutoConfiguration.class,
         JmxAutoConfiguration.class,
         SpringApplicationAdminJmxAutoConfiguration.class,
+        SecurityAutoConfiguration.class
 })
 public class SpringRunner {
     public static void main(String[] args) {
@@ -48,5 +53,12 @@ public class SpringRunner {
             final HibernateMetadataIntegrator metadataIntegrator = context.getBean(HibernateMetadataIntegrator.class);
             new DatabaseInitializer(metadataIntegrator.getMetadata()).initialize();
         }
+        final PasswordEncoder pe = context.getBean(PasswordEncoder.class);
+        final UserRepository ur = context.getBean(UserRepository.class);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        user.setNickname("admin");
+        user.setPassword(pe.encode("admin"));
+        ur.save(user);
     }
 }

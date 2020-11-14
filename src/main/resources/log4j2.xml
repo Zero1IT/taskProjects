@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--        xmlns="http://logging.apache.org/log4j/2.0/config"        -->
+<Configuration strict="true">
+    <Appenders>
+        <Console name="root">
+            <Layout type="PatternLayout"
+                    pattern="Root log: %d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+        </Console>
+        <Console name="console">
+            <Layout type="PatternLayout"
+                    pattern="Root log: %d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.asist.project" additivity="false" level="debug">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="root" />
+        </Root>
+    </Loggers>
+</Configuration>

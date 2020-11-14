@@ -6,6 +6,7 @@ plugins {
 
 group 'com.asist'
 version '1.0-SNAPSHOT'
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
@@ -19,11 +20,17 @@ dependencies {
     implementation 'org.hibernate:hibernate-core:5.4.23.Final'
     implementation 'mysql:mysql-connector-java:8.0.21'
     implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testImplementation 'junit:junit:4.12'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
 }
 
 test {

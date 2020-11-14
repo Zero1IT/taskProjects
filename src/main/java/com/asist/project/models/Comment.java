@@ -1,4 +1,6 @@
-package com.asist.project.entities;
+package com.asist.project.models;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -29,6 +31,7 @@ public class Comment {
         this.id = id;
     }
 
+    @CreationTimestamp
     public Instant getDate() {
         return date;
     }
@@ -37,6 +40,7 @@ public class Comment {
         this.date = date;
     }
 
+    @Column(columnDefinition = "TEXT")
     public String getText() {
         return text;
     }
@@ -45,7 +49,7 @@ public class Comment {
         this.text = text;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     public User getUser() {
         return user;
@@ -55,7 +59,7 @@ public class Comment {
         this.user = user;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projectId", referencedColumnName = "id", nullable = false)
     public Project getProject() {
         return project;

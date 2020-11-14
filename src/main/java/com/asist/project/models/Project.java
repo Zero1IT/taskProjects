@@ -1,8 +1,9 @@
-package com.asist.project.entities;
+package com.asist.project.models;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -42,6 +43,7 @@ public class Project {
         this.name = name;
     }
 
+    @CreationTimestamp
     @Column(nullable = false)
     public Instant getStartDate() {
         return startDate;
@@ -59,7 +61,7 @@ public class Project {
         this.finishDate = finishDate;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creatorId", referencedColumnName = "id", nullable = false)
     public User getCreator() {
         return creator;
@@ -69,7 +71,7 @@ public class Project {
         this.creator = creator;
     }
 
-    @ManyToMany(mappedBy = "projects")
+    @ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY)
     public Set<User> getUsers() {
         return users;
     }
@@ -78,7 +80,7 @@ public class Project {
         this.users = users;
     }
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     public Set<Comment> getComments() {
         return comments;
     }

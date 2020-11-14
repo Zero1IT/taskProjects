@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -20,6 +23,7 @@ import java.util.Properties;
  * @author Alexander Petrushkin
  */
 @Configuration
+@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.asist.project.repository")
 @PropertySource("classpath:data_source.properties")
 public class DatabaseConfig {
@@ -47,9 +51,16 @@ public class DatabaseConfig {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setHibernateIntegrators(integrators);
-        bean.setPackagesToScan("com.asist.project");
+        bean.setPackagesToScan("com.asist.project.models");
         bean.setHibernateProperties(hibernateProperties());
         return bean;
+    }
+
+    @Bean
+    public TransactionManager transactionManager(LocalSessionFactoryBean sessionFactoryBean) {
+        HibernateTransactionManager manager = new HibernateTransactionManager();
+        manager.setSessionFactory(sessionFactoryBean.getObject());
+        return manager;
     }
 
     @NotNull
