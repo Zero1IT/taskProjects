@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getUserPage(int page) {
-        return userRepository.findAll(PageRequest.of(page, PAGE_SIZE));
+        return userRepository.findAll(PageRequest.of(page - 1, PAGE_SIZE));
     }
 
     @Autowired

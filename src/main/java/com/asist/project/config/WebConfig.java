@@ -1,8 +1,12 @@
 package com.asist.project.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import static org.springframework.web.cors.CorsConfiguration.ALL;
 
 /**
  * createdAt: 11/14/2020
@@ -11,7 +15,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author Alexander Petrushkin
  */
 @Configuration
-@EnableWebMvc
-public class WebConfig implements WebMvcConfigurer {
-
+public class WebConfig {
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods(ALL)
+                        .allowedHeaders(ALL);
+            }
+        };
+    }
 }

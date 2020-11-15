@@ -4,6 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 
 /**
  * createdAt: 11/14/2020
@@ -49,7 +50,7 @@ public class Comment {
         this.text = text;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     public User getUser() {
         return user;
@@ -59,7 +60,7 @@ public class Comment {
         this.user = user;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "projectId", referencedColumnName = "id", nullable = false)
     public Project getProject() {
         return project;
@@ -67,5 +68,18 @@ public class Comment {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return comment.id.equals(id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

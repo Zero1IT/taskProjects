@@ -15,6 +15,13 @@ public class Token {
     private String refresh;
     private User user;
 
+    public Token() {
+    }
+
+    public Token(User user) {
+        this.user = user;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -35,7 +42,7 @@ public class Token {
         this.refresh = refresh;
     }
 
-    @OneToOne
+    @OneToOne(optional = false)
     public User getUser() {
         return user;
     }

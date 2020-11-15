@@ -1,7 +1,7 @@
 package com.asist.project.security;
 
-import com.asist.project.models.User;
 import com.asist.project.exception.JwtAuthenticationException;
+import com.asist.project.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,17 +56,18 @@ public class JwtTokenProvider {
      */
     public Map<String, String> createTokens(User user) {
         Date now = new Date();
-        Claims claims = Jwts.claims().setSubject(user.getNickname());
         Map<String, String> tokens = new HashMap<>();
         Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
         String access = Jwts.builder()
-                .setClaims(claims)
+                .claim("role", user.getRole().name())
+                .claim("nickname", user.getNickname())
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + tokenExpiration * 1000))
                 .signWith(key)
                 .compact();
         String refresh = Jwts.builder()
-                .setClaims(claims)
+                .claim("role", user.getRole().name())
+                .claim("nickname", user.getNickname())
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + refreshExpiration * 1000))
                 .signWith(key)
@@ -100,7 +100,7 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .get("nickname", String.class);
     }
 
     public String resolveToken(HttpServletRequest request) {

@@ -1,7 +1,9 @@
 package com.asist.project.dto.mapper;
 
+import com.asist.project.dto.RegistrationRequestDto;
 import com.asist.project.dto.UserDto;
 import com.asist.project.models.User;
+import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -10,8 +12,10 @@ import org.mapstruct.factory.Mappers;
  *
  * @author Alexander Petrushkin
  */
+@Mapper
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     UserDto userToDto(User user);
+    User userFromRegistrationDto(RegistrationRequestDto dto);
 }

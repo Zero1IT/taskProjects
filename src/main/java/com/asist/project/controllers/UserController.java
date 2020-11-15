@@ -23,7 +23,7 @@ public class UserController {
 
     private UserService userService;
 
-    @GetMapping("/{page}")
+    @GetMapping("{page}")
     public Page<UserDto> getUsers(@PathVariable int page) {
         Page<User> userPage = userService.getUserPage(page);
         return userPage.map(UserMapper.INSTANCE::userToDto);

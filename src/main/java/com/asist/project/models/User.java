@@ -83,7 +83,7 @@ public class User {
         this.activeAccount = activeAccount;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "p_users_to_projects",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -106,7 +106,7 @@ public class User {
         this.comments = comments;
     }
 
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     public Set<Project> getCreatedProjects() {
         return createdProjects;
     }

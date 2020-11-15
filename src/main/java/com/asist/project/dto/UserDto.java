@@ -11,7 +11,6 @@ import java.time.Instant;
 public class UserDto {
     private Long id;
     private String nickname;
-    private Instant createdAt;
     private boolean activeAccount = true;
 
     public Long getId() {
@@ -28,14 +27,6 @@ public class UserDto {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
     }
 
     public boolean isActiveAccount() {

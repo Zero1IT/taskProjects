@@ -1,33 +1,26 @@
-package com.asist.project.models;
+package com.asist.project.dto;
 
-import org.hibernate.annotations.CreationTimestamp;
+import com.asist.project.models.User;
 
-import javax.persistence.*;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
- * createdAt: 11/14/2020
+ * createdAt: 11/15/2020
  * project: ProjectsPanel
  *
  * @author Alexander Petrushkin
  */
-@Entity
-@Table(name = "p_projects")
-public class Project {
+public class BigProjectDto {
     private Long id;
     private String name;
     private String description;
     private Instant startDate;
     private Instant finishDate;
-    private User creator;
-    private Set<User> users = new HashSet<>();
-    private Set<Comment> comments;
+    private UserDto creator;
+    private Set<UserDto> users;
+    private Set<CommentDto> comments;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -36,7 +29,6 @@ public class Project {
         this.id = id;
     }
 
-    @Column(nullable = false)
     public String getName() {
         return name;
     }
@@ -45,7 +37,6 @@ public class Project {
         this.name = name;
     }
 
-    @Column(columnDefinition = "TEXT")
     public String getDescription() {
         return description;
     }
@@ -54,8 +45,6 @@ public class Project {
         this.description = description;
     }
 
-    @CreationTimestamp
-    @Column(nullable = false)
     public Instant getStartDate() {
         return startDate;
     }
@@ -72,31 +61,27 @@ public class Project {
         this.finishDate = finishDate;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "creatorId", referencedColumnName = "id", nullable = false)
-    public User getCreator() {
+    public UserDto getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(UserDto creator) {
         this.creator = creator;
     }
 
-    @ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    public Set<User> getUsers() {
+    public Set<UserDto> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(Set<UserDto> users) {
         this.users = users;
     }
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    public Set<Comment> getComments() {
+    public Set<CommentDto> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(Set<CommentDto> comments) {
         this.comments = comments;
     }
 }
