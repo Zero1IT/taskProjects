@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+    @Transactional
     @Override
     public User addUserToProject(String nickname, String userNickname, long projectId) {
         boolean isOwner = userRepository.findByNicknameAndFetchProjects(nickname)
@@ -73,7 +75,7 @@ public class ProjectServiceImpl implements ProjectService {
             if (optional.isPresent()) {
                 try {
                     User user = optional.get();
-                    projectRepository.assign(user.getId(), projectId);
+                    user.getProjects().add(projectRepository.getOne(projectId));
                     return user;
                 } catch (DataIntegrityViolationException e) {
                     return null;
@@ -92,6 +94,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElse(new ArrayList<>());
     }
 
+    @Transactional
     @Override
     public Project addProject(String nickname, Project project) {
         Optional<User> userOptional = userRepository.findByNickname(nickname);
@@ -99,7 +102,7 @@ public class ProjectServiceImpl implements ProjectService {
             User user = userOptional.get();
             project.setCreator(user);
             project = projectRepository.save(project);
-            projectRepository.assign(user.getId(), project.getId());
+            user.getProjects().add(project);
             return project;
         }
         return null;
